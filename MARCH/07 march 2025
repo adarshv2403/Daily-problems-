@@ -1,1 +1,52 @@
+*PROBLEM 1:- CLOSEST PRIME NUMBER IN RANGE (2523) *
 
+
+
+class Solution {
+public:
+
+        vector<bool> sieve (int n){
+            vector<bool> isprime(n+1,true); //size of the prime vector and making it all true .n+1  because it start from 0.
+            isprime[0]=isprime[1]=false; //not a prime no 
+
+            for(int i=2;i*i<=n;i++){ //from 2 onwrds 
+                if(isprime[i]){
+                    for(int j=i*i;j<=n;j+=i){ //if two is find prime then make all the multiple of 2 non prime
+                        isprime[j]=false;
+                    }
+                }
+            }
+            return isprime; //else prime no
+        }
+
+    vector<int> closestPrimes(int left, int right) {
+      vector<bool> isprime = sieve(right);//using the sieve function to check whether the number is prime or not 
+
+      vector<int> primes; //intialising a vector 
+
+      for(int i=left;i<=right;i++){ //applying a loop to traverse the element between the left and right pointer given that is withen the range 
+        if(isprime[i]){ //checking that the traversed no is prime or not 
+           primes.push_back(i); //if prime then stiore in array 
+        }
+      }
+     
+     //when their is only one prime no between the range 
+
+      if (primes.size()<2){
+      return {-1,-1};
+      }
+ 
+      int mindiff=INT_MAX; //intialising the mindiff
+      vector<int> result(2); //reult that store only two values.
+
+      for(int i=1;i<primes.size();i++){ //traversing the prime loop 
+        int diff=primes[i]-primes[i-1]; //calculating the diff between them 
+        if(diff<mindiff){ //apply cndition 
+            mindiff=diff;
+        result={primes[i-1],primes[i]}; //returning the pair 
+        }
+      }
+      
+        return result; //returning the result 
+    }
+};
